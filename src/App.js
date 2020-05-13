@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import 'normalize.css';
 
-function App() {
+import { BrowserRouter, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+
+import CarBuilder from './components/CarBuilder';
+import CarModel from './components/CarModel';
+import GlobalStyle from './theme/GlobalStyle';
+import styled from 'styled-components';
+
+const routes = [
+  { path: '/', name: 'CarModel', Component: CarModel, exact: true },
+  {
+    path: '/carbuilder',
+    name: 'CarBuilder',
+    Component: CarBuilder,
+    exact: false,
+  },
+];
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <GlobalStyle />
+      <BrowserRouter>
+        {routes.map(({ path, Component, exact }) => (
+          <Route key={path} exact={exact} path={path}>
+            <Component />
+          </Route>
+        ))}
+      </BrowserRouter>
+    </>
   );
-}
+};
 
 export default App;
