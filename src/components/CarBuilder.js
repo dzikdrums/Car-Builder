@@ -1,33 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import { NavLink, withRouter } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import {
-  changeColor,
-  changeModel,
+  changeSpecs,
   getCars,
   getRequest,
   loadCarsRequest,
 } from '../redux/carsRedux';
 
+import CarBuilderWrapper from '../styles/CarBuilderStyles';
 import CarColor from './CarColor';
 import CarOption from './CarOption';
-import { cars } from '../data';
+import { ReactComponent as LeftArrow } from '../assets/arrow-left.svg';
+import Loader from './Loader';
+import Summary from './Summary';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
-
-const CarBuilderWrapper = styled.div`
-  position: absolute;
-  top: 20px;
-  padding-bottom: 50px;
-`;
 
 const gearboxOptionContent = {
-  title: 'Select Gearbox',
+  title: 'gearbox',
   subtitle: 'Our flawless gearboxes, designes exclusively for electric motor',
 };
 
 const engineOptionContent = {
-  title: 'Select Engine',
+  title: 'engine',
   subtitle:
     'All cars have Dual Motor All-Wheel Drive, adaptive air suspension, premium interior and sound',
 };
@@ -37,11 +31,9 @@ const CarBuilder = ({
   cars,
   request,
   location,
-  changeColor,
-  changeModel,
+  changeSpecs,
 }) => {
   const pickedModel = location.pathname.slice(-1);
-  const [chosenModel, setChosenModel] = useState(pickedModel);
 
   useEffect(() => {
     loadCarsRequest();
@@ -53,29 +45,38 @@ const CarBuilder = ({
     cars.length > 0
   ) {
     const pickedCarRedux = {
-      pick: cars[chosenModel].name,
-      price: cars[chosenModel].price,
+      category: 'model',
+      pick: cars[pickedModel].name,
+      price: cars[pickedModel].price,
     };
-    changeModel(pickedCarRedux);
+    changeSpecs(pickedCarRedux);
 
     return (
       <CarBuilderWrapper>
-        <CarColor model={chosenModel} colors={cars[chosenModel].colors} />
+        <div className="header-wrapper">
+          <NavLink className="go-back" to="/">
+            <LeftArrow />
+            back
+          </NavLink>
+          <header>{cars[pickedModel].name}</header>
+        </div>
+        <CarColor model={pickedModel} colors={cars[pickedModel].colors} />
         <CarOption
-          options={cars[chosenModel].engines}
+          options={cars[pickedModel].engines}
           title={engineOptionContent.title}
           subtitle={engineOptionContent.subtitle}
         />
         <CarOption
-          options={cars[chosenModel].gearbox}
+          options={cars[pickedModel].gearbox}
           title={gearboxOptionContent.title}
           subtitle={gearboxOptionContent.subtitle}
         />
+        <Summary />
       </CarBuilderWrapper>
     );
   }
 
-  return <h1>Hello</h1>;
+  return <Loader />;
 };
 
 const mapStateToProps = (state) => ({
@@ -85,8 +86,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   loadCarsRequest: () => dispatch(loadCarsRequest()),
-  changeColor: (specs) => dispatch(changeColor(specs)),
-  changeModel: (specs) => dispatch(changeModel(specs)),
+  changeSpecs: (specs) => dispatch(changeSpecs(specs)),
 });
 export default connect(
   mapStateToProps,

@@ -9,15 +9,12 @@ const createActionName = (name) => `app/${reducerName}/${name}`;
 /* SELECTORS */
 export const getCars = ({ cars }) => cars.data;
 export const getRequest = ({ cars }) => cars.request;
-export const getSpecs = ({ cars }) => cars.carSpecs;
+export const getSpecs = ({ cars }) => cars.specs;
 
 /* ACTIONS */
 
 export const LOAD_CARS = createActionName('LOAD_CARS');
-export const CHANGE_COLOR = createActionName('CHANGE_COLOR');
-export const CHANGE_MODEL = createActionName('CHANGE_MODEL');
-export const CHANGE_ENGINE = createActionName('CHANGE_ENGINE');
-export const CHANGE_GEARBOX = createActionName('CHANGE_GEARBOX');
+export const CHANGE_SPECS = createActionName('CHANGE_SPECS');
 export const START_REQUEST = createActionName('START_REQUEST');
 export const END_REQUEST = createActionName('END_REQUEST');
 export const ERROR_REQUEST = createActionName('ERROR_REQUEST');
@@ -25,21 +22,9 @@ export const RESET_REQUEST = createActionName('RESET_REQUEST');
 
 /* ACTION CREATORS */
 
-export const changeModel = (payload) => ({
+export const changeSpecs = (payload) => ({
   payload,
-  type: CHANGE_MODEL,
-});
-export const changeColor = (payload) => ({
-  payload,
-  type: CHANGE_COLOR,
-});
-export const changeEngine = (payload) => ({
-  payload,
-  type: CHANGE_ENGINE,
-});
-export const changeGearbox = (payload) => ({
-  payload,
-  type: CHANGE_GEARBOX,
+  type: CHANGE_SPECS,
 });
 export const loadCars = (payload) => ({ payload, type: LOAD_CARS });
 export const startRequest = () => ({ type: START_REQUEST });
@@ -56,10 +41,12 @@ const initialState = {
     error: null,
     success: null,
   },
-  model: { pick: '', price: 0 },
-  color: { pick: '', price: 0 },
-  engine: { pick: '', price: 0 },
-  gearbox: { pick: '', price: 0 },
+  specs: [
+    { category: 'model', pick: '', price: 0 },
+    { category: 'color', pick: '', price: 0 },
+    { category: 'engine', pick: '', price: 0 },
+    { category: 'gearbox', pick: '', price: 0 },
+  ],
 };
 
 /* REDUCER */
@@ -72,25 +59,18 @@ export default function reducer(statePart = initialState, action = {}) {
         data: action.payload,
       };
     }
-    case CHANGE_MODEL:
+    case CHANGE_SPECS:
+      const spec = statePart.specs.find(
+        (el) => el.category === action.payload.category
+      );
+      spec.pick = action.payload.pick;
+      spec.price = action.payload.price;
+      const specsUpdate = statePart.specs.map((el) =>
+        el.category === action.payload.category ? spec : el
+      );
       return {
         ...statePart,
-        model: { pick: action.payload.pick, price: action.payload.price },
-      };
-    case CHANGE_COLOR:
-      return {
-        ...statePart,
-        color: { pick: action.payload.pick, price: action.payload.price },
-      };
-    case CHANGE_ENGINE:
-      return {
-        ...statePart,
-        color: { pick: action.payload.pick, price: action.payload.price },
-      };
-    case CHANGE_GEARBOX:
-      return {
-        ...statePart,
-        color: { pick: action.payload.pick, price: action.payload.price },
+        specs: specsUpdate,
       };
     case START_REQUEST: {
       return {
@@ -122,11 +102,6 @@ export default function reducer(statePart = initialState, action = {}) {
         },
       };
     }
-    case RESET_REQUEST:
-      return {
-        ...statePart,
-        request: { pending: false, error: null, success: null },
-      };
     default:
       return statePart;
   }
