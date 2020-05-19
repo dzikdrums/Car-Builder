@@ -53,6 +53,7 @@ npm run build
 - [Create React App](https://github.com/facebook/create-react-app) - JavaScript Framework which I used
 - [styled-components](https://www.styled-components.com/) - Writing CSS in JavaScript
 - [GSAP](https://greensock.com/gsap/) - Professional-grade JavaScript animation for the modern web
+- [REDUX](https://redux.js.org/) - State managment library
 
 ## License
 
