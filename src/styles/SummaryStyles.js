@@ -32,6 +32,41 @@ export const SummaryWrapper = styled.div`
         font-weight: 400;
       }
     }
+
+    .featuresWrapper {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      align-items: flex-end;
+
+      span {
+        flex: 1;
+        margin-bottom: 10px;
+
+        &.category {
+          font-weight: 700;
+          letter-spacing: 0.6px;
+        }
+
+        &.pick {
+          flex: 2;
+        }
+
+        &.price,
+        &.pick {
+          text-align: right;
+          font-weight: 400;
+        }
+      }
+      .featureWrapper {
+        width: 85%;
+        display: flex;
+
+        .pick {
+          flex: 2;
+        }
+      }
+    }
   }
 
   .totalPrice {

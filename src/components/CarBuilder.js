@@ -26,6 +26,12 @@ const engineOptionContent = {
     'All cars have Dual Motor All-Wheel Drive, adaptive air suspension, premium interior and sound',
 };
 
+const featuresOptionContent = {
+  title: 'features',
+  subtitle:
+    'All cars have Dual Motor All-Wheel Drive, adaptive air suspension, premium interior and sound',
+};
+
 const CarBuilder = ({
   loadCarsRequest,
   cars,
@@ -70,6 +76,11 @@ const CarBuilder = ({
           options={cars[pickedModel].gearbox}
           title={gearboxOptionContent.title}
           subtitle={gearboxOptionContent.subtitle}
+        />
+        <CarOption
+          options={cars[pickedModel].features}
+          title={featuresOptionContent.title}
+          subtitle={featuresOptionContent.subtitle}
         />
         <Summary />
       </CarBuilderWrapper>

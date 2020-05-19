@@ -12,19 +12,22 @@ export const getRequest = ({ cars }) => cars.request;
 export const getSpecs = ({ cars }) => cars.specs;
 
 /* ACTIONS */
-
 export const LOAD_CARS = createActionName('LOAD_CARS');
 export const CHANGE_SPECS = createActionName('CHANGE_SPECS');
+export const CHANGE_FEATURES = createActionName('CHANGE_FEATURES');
 export const START_REQUEST = createActionName('START_REQUEST');
 export const END_REQUEST = createActionName('END_REQUEST');
 export const ERROR_REQUEST = createActionName('ERROR_REQUEST');
 export const RESET_REQUEST = createActionName('RESET_REQUEST');
 
 /* ACTION CREATORS */
-
 export const changeSpecs = (payload) => ({
   payload,
   type: CHANGE_SPECS,
+});
+export const changeFeatures = (payload) => ({
+  payload,
+  type: CHANGE_FEATURES,
 });
 export const loadCars = (payload) => ({ payload, type: LOAD_CARS });
 export const startRequest = () => ({ type: START_REQUEST });
@@ -33,7 +36,6 @@ export const errorRequest = (error) => ({ error, type: ERROR_REQUEST });
 export const resetRequest = () => ({ type: RESET_REQUEST });
 
 /* INITIAL STATE */
-
 const initialState = {
   data: [],
   request: {
@@ -46,11 +48,11 @@ const initialState = {
     { category: 'color', pick: '', price: 0 },
     { category: 'engine', pick: '', price: 0 },
     { category: 'gearbox', pick: '', price: 0 },
+    { category: 'features', pick: [] },
   ],
 };
 
 /* REDUCER */
-
 export default function reducer(statePart = initialState, action = {}) {
   switch (action.type) {
     case LOAD_CARS: {
@@ -64,7 +66,9 @@ export default function reducer(statePart = initialState, action = {}) {
         (el) => el.category === action.payload.category
       );
       spec.pick = action.payload.pick;
-      spec.price = action.payload.price;
+      if (action.payload.category !== 'features') {
+        spec.price = action.payload.price;
+      }
       const specsUpdate = statePart.specs.map((el) =>
         el.category === action.payload.category ? spec : el
       );

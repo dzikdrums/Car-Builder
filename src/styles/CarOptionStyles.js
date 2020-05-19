@@ -7,6 +7,19 @@ export const CarOptionWrapper = styled.section`
   align-items: center;
   margin-bottom: 30px;
 
+  .checkbox {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    position: relative;
+    svg {
+      position: absolute;
+      top: 2px;
+      left: 1px;
+    }
+  }
+
   .title-wrapper {
     width: 100%;
     display: flex;

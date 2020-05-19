@@ -5,30 +5,62 @@ import {
 import React, { useEffect, useState } from 'react';
 
 import EngineSpecs from './EngineSpecs';
+import { ReactComponent as Tick } from '../assets/tick.svg';
 import { changeSpecs } from '../redux/carsRedux';
 import { connect } from 'react-redux';
 
-const CarOption = ({ title, subtitle, options, changeSpecs }) => {
-  const [chosenOption, setChosenOption] = useState(options[0][0]);
+const CarOption = ({
+  title,
+  subtitle,
+  options,
+  changeSpecs,
+  changeFeatures,
+}) => {
+  const [chosenOption, setChosenOption] = useState(options[0]);
+  const [chosenFeaturesNames, setChosenFeaturesNames] = useState([]);
+  const [chosenFeatures, setChosenFeatures] = useState([]);
 
   const handleClick = (index) => {
-    setChosenOption(options[index][0]);
+    setChosenOption(options[index]);
 
     changeSpecs({
       category: title,
-      pick: options[index][0].name,
-      price: options[index][0].price,
+      pick: options[index].name,
+      price: options[index].price,
     });
   };
 
+  const handleClickFeatures = (feature, index) => {
+    let filteredFeaturesNames;
+    let filteredFeatures;
+    if (!chosenFeaturesNames.includes(feature)) {
+      filteredFeaturesNames = [...chosenFeaturesNames, feature];
+      filteredFeatures = [...chosenFeatures, options[index]];
+    } else {
+      filteredFeaturesNames = chosenFeaturesNames.filter(
+        (item) => item !== feature
+      );
+      filteredFeatures = chosenFeatures.filter((item) => item.name !== feature);
+    }
+    setChosenFeaturesNames(filteredFeaturesNames);
+    setChosenFeatures(filteredFeatures);
+  };
+
   useEffect(() => {
-    setChosenOption(options[0][0]);
-    changeSpecs({
-      category: title,
-      pick: options[0][0].name,
-      price: options[0][0].price,
-    });
-  }, [changeSpecs, options, title]);
+    setChosenOption(options[0]);
+    if (title !== 'features') {
+      changeSpecs({
+        category: title,
+        pick: options[0].name,
+        price: options[0].price,
+      });
+    } else {
+      changeSpecs({
+        category: title,
+        pick: chosenFeatures,
+      });
+    }
+  }, [changeSpecs, chosenFeatures, options, title]);
 
   return (
     <CarOptionWrapper>
@@ -37,19 +69,37 @@ const CarOption = ({ title, subtitle, options, changeSpecs }) => {
         <h3 className="section-subtitle">{subtitle}</h3>
       </div>
       {title === 'engine' && <EngineSpecs option={chosenOption} />}
-      {options.map((option, index) => {
-        const optionFromArray = option[0];
-        return (
-          <StyledOptionButton
-            key={optionFromArray.name}
-            onClick={() => handleClick(index)}
-            active={chosenOption.name === optionFromArray.name}
-          >
-            <span>{optionFromArray.name}</span>
-            <span>{optionFromArray.price} $</span>
-          </StyledOptionButton>
-        );
-      })}
+      {title !== 'features' &&
+        options.map((option, index) => {
+          return (
+            <StyledOptionButton
+              key={option.name}
+              onClick={() => handleClick(index)}
+              active={chosenOption.name === option.name}
+            >
+              <span>{option.name}</span>
+              <span>{option.price} $</span>
+            </StyledOptionButton>
+          );
+        })}
+      {title === 'features' &&
+        options.map((option, index) => {
+          return (
+            <StyledOptionButton
+              key={option.name}
+              onClick={() => handleClickFeatures(option.name, index)}
+              active={chosenFeaturesNames.includes(option.name)}
+            >
+              {title === 'features' && (
+                <i className="checkbox selected">
+                  {chosenFeaturesNames.includes(option.name) && <Tick />}
+                </i>
+              )}
+              <span>{option.name}</span>
+              <span>{option.price} $</span>
+            </StyledOptionButton>
+          );
+        })}
     </CarOptionWrapper>
   );
 };

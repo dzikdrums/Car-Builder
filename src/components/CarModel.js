@@ -11,9 +11,9 @@ import gsap from 'gsap';
 const tl = gsap.timeline();
 
 const CarModel = () => {
+  const isMobile = window.innerWidth < 540;
   const [visibleModel, setVisibleModel] = useState(1);
   const [introPlayed, setIntroPlayed] = useState(false);
-  const isMobile = useState(window.innerWidth < 540);
 
   // sizes that fit mobile view
   let imageScale = 2.8;

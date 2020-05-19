@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 
 import { changeSpecs } from '../redux/carsRedux';
 import { connect } from 'react-redux';
-import gsap from 'gsap';
 
 const priceOption = (price) => {
   if (price === 0) return 'Included';
@@ -12,32 +11,25 @@ const priceOption = (price) => {
   }
 };
 
-const tl = gsap.timeline();
-
 const CarColor = ({ colors, model, changeSpecs }) => {
-  const [pickedColor, setPickedColor] = useState(colors[0][0]);
+  const [pickedColor, setPickedColor] = useState(colors[0]);
 
   const handleClick = (index) => {
-    setPickedColor(colors[index][0]);
+    setPickedColor(colors[index]);
 
     changeSpecs({
       category: 'color',
-      pick: colors[index][0].color,
-      price: colors[index][0].price,
+      pick: colors[index].color,
+      price: colors[index].price,
     });
   };
 
   useEffect(() => {
-    tl.from('.car-color', 2, {
-      scale: 1.1,
-      ease: 'expo.inOut',
-    });
-
-    setPickedColor(colors[0][0]);
+    setPickedColor(colors[0]);
     changeSpecs({
       category: 'color',
-      pick: colors[0][0].color,
-      price: colors[0][0].price,
+      pick: colors[0].color,
+      price: colors[0].price,
     });
   }, [changeSpecs, colors, model]);
 
@@ -57,11 +49,11 @@ const CarColor = ({ colors, model, changeSpecs }) => {
         <div>
           {colors.map((color, index) => (
             <StyledImage
-              key={color[0].thumb}
-              src={require(`../assets/${color[0].thumb}.png`)}
+              key={color.thumb}
+              src={require(`../assets/${color.thumb}.png`)}
               alt="color thumb"
               onClick={() => handleClick(index)}
-              active={pickedColor.thumb === color[0].thumb}
+              active={pickedColor.thumb === color.thumb}
             />
           ))}
         </div>
