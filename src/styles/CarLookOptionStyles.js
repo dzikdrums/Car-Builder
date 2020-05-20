@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-export const CarColorWrapper = styled.section`
+export const CarLookOptionWrapper = styled.section`
   color: black;
   width: 100;
   margin-bottom: 30px;
@@ -32,8 +32,12 @@ export const CarColorWrapper = styled.section`
     .selected-option-detail {
       font-size: 1.4rem;
       letter-spacing: 0.3px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
 
-      .selected-option-description {
+      .selected-option-name {
         line-height: 24px;
         font-weight: 700;
         margin-right: 10px;
@@ -41,6 +45,12 @@ export const CarColorWrapper = styled.section`
       .selected-option-price {
         color: #666;
         font-weight: 300;
+      }
+
+      .selected-option-description {
+        color: #666;
+        font-weight: 300;
+        margin: 0 0 10px;
       }
     }
   }

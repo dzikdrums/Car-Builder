@@ -8,28 +8,36 @@ import {
 } from '../redux/carsRedux';
 
 import CarBuilderWrapper from '../styles/CarBuilderStyles';
-import CarColor from './CarColor';
+import CarLookOption from './CarLookOption';
 import CarOption from './CarOption';
 import { ReactComponent as LeftArrow } from '../assets/arrow-left.svg';
 import Loader from './Loader';
 import Summary from './Summary';
 import { connect } from 'react-redux';
 
-const gearboxOptionContent = {
-  title: 'gearbox',
-  subtitle: 'Our flawless gearboxes, designes exclusively for electric motor',
-};
-
-const engineOptionContent = {
-  title: 'engine',
-  subtitle:
-    'All cars have Dual Motor All-Wheel Drive, adaptive air suspension, premium interior and sound',
-};
-
-const featuresOptionContent = {
-  title: 'features',
-  subtitle:
-    'All cars have Dual Motor All-Wheel Drive, adaptive air suspension, premium interior and sound',
+const content = {
+  colorOptionContent: {
+    title: 'Select Color',
+    category: 'color',
+  },
+  gearboxOptionContent: {
+    title: 'gearbox',
+    subtitle: 'Our flawless gearboxes, designes exclusively for electric motor',
+  },
+  engineOptionContent: {
+    title: 'engine',
+    subtitle:
+      'All cars have Dual Motor All-Wheel Drive, adaptive air suspension, premium interior and sound',
+  },
+  featuresOptionContent: {
+    title: 'features',
+    subtitle:
+      'All cars have Dual Motor All-Wheel Drive, adaptive air suspension, premium interior and sound',
+  },
+  interiorOptionContent: {
+    title: 'Select Premium Interior',
+    category: 'interior',
+  },
 };
 
 const CarBuilder = ({
@@ -66,21 +74,32 @@ const CarBuilder = ({
           </NavLink>
           <header>{cars[pickedModel].name}</header>
         </div>
-        <CarColor model={pickedModel} colors={cars[pickedModel].colors} />
+        <CarLookOption
+          model={pickedModel}
+          options={cars[pickedModel].colors}
+          category={content.colorOptionContent.category}
+          title={content.colorOptionContent.title}
+        />
         <CarOption
           options={cars[pickedModel].engines}
-          title={engineOptionContent.title}
-          subtitle={engineOptionContent.subtitle}
+          title={content.engineOptionContent.title}
+          subtitle={content.engineOptionContent.subtitle}
         />
         <CarOption
           options={cars[pickedModel].gearbox}
-          title={gearboxOptionContent.title}
-          subtitle={gearboxOptionContent.subtitle}
+          title={content.gearboxOptionContent.title}
+          subtitle={content.gearboxOptionContent.subtitle}
+        />
+        <CarLookOption
+          model={pickedModel}
+          category={content.interiorOptionContent.category}
+          title={content.interiorOptionContent.title}
+          options={cars[pickedModel].interior}
         />
         <CarOption
           options={cars[pickedModel].features}
-          title={featuresOptionContent.title}
-          subtitle={featuresOptionContent.subtitle}
+          title={content.featuresOptionContent.title}
+          subtitle={content.featuresOptionContent.subtitle}
         />
         <Summary />
       </CarBuilderWrapper>
