@@ -48,6 +48,7 @@ const initialState = {
     { category: 'color', pick: '', price: 0 },
     { category: 'engine', pick: '', price: 0 },
     { category: 'gearbox', pick: '', price: 0 },
+    { category: 'interior', pick: '', price: 0 },
     { category: 'features', pick: [] },
   ],
 };

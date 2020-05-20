@@ -20,6 +20,8 @@ const CarOption = ({
   const [chosenFeaturesNames, setChosenFeaturesNames] = useState([]);
   const [chosenFeatures, setChosenFeatures] = useState([]);
 
+  console.log(options);
+
   const handleClick = (index) => {
     setChosenOption(options[index]);
 
