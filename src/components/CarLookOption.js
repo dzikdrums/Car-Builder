@@ -3,21 +3,29 @@ import {
   StyledImage,
 } from '../styles/CarLookOptionStyles';
 import React, { useEffect, useState } from 'react';
+import { changeSpecs, getSpecs } from '../redux/carsRedux';
 
 import InteriorDetails from './InteriorDetails';
-import { changeSpecs } from '../redux/carsRedux';
 import { connect } from 'react-redux';
 
 const priceOption = (price) => {
-  console.log(price);
   if (price === 0) return 'Included';
   else {
     return `${price} $`;
   }
 };
 
-const CarLookOption = ({ options, model, changeSpecs, category, title }) => {
+const CarLookOption = ({
+  options,
+  model,
+  specs,
+  changeSpecs,
+  category,
+  title,
+  layout,
+}) => {
   const [pickedOption, setPickedOption] = useState(options[0]);
+  let pictureName = pickedOption.picture;
 
   const handleClick = (index) => {
     setPickedOption(options[index]);
@@ -38,12 +46,24 @@ const CarLookOption = ({ options, model, changeSpecs, category, title }) => {
     });
   }, [changeSpecs, options, model, category]);
 
+  if (layout && category === 'interior') {
+    let noOfSeats = layout[0].noOfSeats;
+
+    const checkLayout = (elem, index) => {
+      if (elem.name === specs[5].pick) {
+        noOfSeats = elem.noOfSeats;
+      }
+    };
+    layout.forEach(checkLayout);
+    pictureName = `${noOfSeats}_${pickedOption.picture}`;
+  }
+
   return (
     <CarLookOptionWrapper>
       <div className="img-wrapper">
         <img
           className="car-color"
-          src={require(`../assets/${pickedOption.picture}`)}
+          src={require(`../assets/${pictureName}`)}
           alt="car color"
         />
       </div>
@@ -81,8 +101,12 @@ const CarLookOption = ({ options, model, changeSpecs, category, title }) => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  specs: getSpecs(state),
+});
+
 const mapDispatchToProps = (dispatch) => ({
   changeSpecs: (specs) => dispatch(changeSpecs(specs)),
 });
 
-export default connect(null, mapDispatchToProps)(CarLookOption);
+export default connect(mapStateToProps, mapDispatchToProps)(CarLookOption);

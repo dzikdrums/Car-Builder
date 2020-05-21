@@ -38,11 +38,15 @@ const content = {
     title: 'Select Premium Interior',
     category: 'interior',
   },
+  interiorLayoutContent: {
+    title: 'layout',
+  },
 };
 
 const CarBuilder = ({
   loadCarsRequest,
   cars,
+  specs,
   request,
   location,
   changeSpecs,
@@ -92,15 +96,23 @@ const CarBuilder = ({
         />
         <CarLookOption
           model={pickedModel}
+          layout={cars[pickedModel].layout}
           category={content.interiorOptionContent.category}
           title={content.interiorOptionContent.title}
           options={cars[pickedModel].interior}
         />
+        {pickedModel === '2' && (
+          <CarOption
+            options={cars[pickedModel].layout}
+            title={content.interiorLayoutContent.title}
+          />
+        )}
         <CarOption
           options={cars[pickedModel].features}
           title={content.featuresOptionContent.title}
           subtitle={content.featuresOptionContent.subtitle}
         />
+
         <Summary />
       </CarBuilderWrapper>
     );

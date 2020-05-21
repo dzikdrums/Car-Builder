@@ -20,8 +20,6 @@ const CarOption = ({
   const [chosenFeaturesNames, setChosenFeaturesNames] = useState([]);
   const [chosenFeatures, setChosenFeatures] = useState([]);
 
-  console.log(options);
-
   const handleClick = (index) => {
     setChosenOption(options[index]);
 
@@ -68,7 +66,7 @@ const CarOption = ({
     <CarOptionWrapper>
       <div className="title-wrapper">
         <h2 className="section-title">{`Select ${title}`}</h2>
-        <h3 className="section-subtitle">{subtitle}</h3>
+        {subtitle && <h3 className="section-subtitle">{subtitle}</h3>}
       </div>
       {title === 'engine' && <EngineSpecs option={chosenOption} />}
       {title !== 'features' &&
@@ -80,7 +78,9 @@ const CarOption = ({
               active={chosenOption.name === option.name}
             >
               <span>{option.name}</span>
-              <span>{option.price} $</span>
+              <span>
+                {option.price !== '0' ? `${option.price} $` : 'included'}
+              </span>
             </StyledOptionButton>
           );
         })}
