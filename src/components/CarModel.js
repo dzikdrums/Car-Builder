@@ -44,14 +44,17 @@ const CarModel = () => {
       })
         .to('.title', 1, {
           opacity: '1',
+          delay: '-1',
           ease: 'power4.inOut',
         })
         .to('.model-pick', 1, {
           opacity: '1',
+          delay: '-1',
           ease: 'power4.inOut',
         })
         .to('.carousel', 1, {
           opacity: '1',
+          delay: '-1',
           ease: 'power4.inOut',
         });
 
